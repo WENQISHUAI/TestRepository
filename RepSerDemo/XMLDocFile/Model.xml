@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Model</name>
+    </assembly>
+    <members>
+        <member name="P:Model.MessageModel`1.Success">
+            <summary>
+            操作是否成功
+            </summary>
+        </member>
+        <member name="P:Model.MessageModel`1.Msg">
+            <summary>
+            返回信息
+            </summary>
+        </member>
+        <member name="P:Model.MessageModel`1.Data">
+            <summary>
+            返回数据集合
+            </summary>
+        </member>
+        <member name="T:Model.Models.Notes">
+            <summary>
+            Notes实体
+            </summary>
+        </member>
+        <member name="P:Model.Models.Notes.Id">
+            <summary>
+            标识
+            </summary>
+        </member>
+        <member name="P:Model.Models.Notes.Title">
+            <summary>
+            Title
+            </summary>
+        </member>
+        <member name="P:Model.Models.Notes.Content">
+            <summary>
+            内容
+            </summary>
+        </member>
+        <member name="P:Model.Models.Notes.Create">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Model.Models.Notes.Other">
+            <summary>
+            其他
+            </summary>
+        </member>
+    </members>
+</doc>

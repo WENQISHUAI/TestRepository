@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RepSerDemo</name>
+    </assembly>
+    <members>
+        <member name="M:RepSerDemo.Controllers.ValuesController.Get(System.Int32)">
+            <summary>
+            数据库查询
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RepSerDemo.Controllers.ValuesController.Get(System.Int32,System.Int32)">
+            <summary>
+            计算
+            </summary>
+            <param name="i"></param>
+            <param name="j"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RepSerDemo.Controllers.ValuesController.GetJWTStr">
+            <summary>
+            获取JWT字符串
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
