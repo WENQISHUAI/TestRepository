@@ -2,7 +2,7 @@ import store from "../store";
 import router from "../router.js";
 import Vue from 'vue'
 //api接口地址
-var root = "/api/"
+var root = "/api/" 
 
 //引用axios
 var axios = require('axios')

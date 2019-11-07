@@ -1,5 +1,4 @@
-<template>
-       
+<template> 
         <div>
                 <h1>This is login page</h1> 
         <el-row type="flex" justify="center">
@@ -10,6 +9,7 @@
                 <el-form-item label="密码" prop="pass">
                     <el-input v-model="user.pass" type="password"></el-input>
                 </el-form-item>
+                <el-checkbox v-model="remember">记住我</el-checkbox>
                 <el-form-item>
                     <el-button type="primary"    icon="el-icon-upload" @click="login">登录</el-button>
                   
@@ -21,6 +21,7 @@
     </template>
 
 <script>
+    const Base64=require('js-base64').Base64;
     export default {
         methods: {
             login() { //使用elementui validate验证
@@ -42,6 +43,7 @@
                                 console.log("token",_this.$store.state.token); //打印token，查看是否已存入store
                                 console.log("expiredate", new Date(_this.$store.state.expiredate));
                                 console.log("refreshTime",new Date(window.localStorage.refreshTime));
+                                this.setUserInfo();
                                 this.$notify({
                                     type: "success",
                                     message: "欢迎你," + this.user.name + "!",
@@ -64,17 +66,46 @@
                     } else {
                         return false;
                     }
-                })
-
+                }) 
             },
             logout() {
                 this.isLogin = false;
                 this.$store.commit("saveToken", ""); //清掉 token
+            },
+            setUserInfo(){
+                if(this.remember){
+                    this.setCookie("account",this.user.name);
+                    this.setCookie("password",Base64.encode (this.user.pass));
+                }
+                else{
+                    this.setCookie("account","");
+                    this.setCookie("password","");
+                } 
+            },
+            getCookie(key){
+                if(document.cookie.length>0){
+                    var start=document.cookie.indexOf(key+"=");     
+                    if(start!=-1){
+                        start=start+key.length+1;
+                        var end =document.cookie.indexOf(";",start);
+                        if(end===-1){
+                            end=document.cookie.length;
+                        }
+                        return unescape(document.cookie.substring(start,end))
+                    }
+                }
+                return "";
+            },
+            setCookie(cname,value){
+                var exdate=new Date(); 
+                exdate.setSeconds(exdate.getSeconds()+10);
+                document.cookie=cname+"="+escape(value)+";expires="+exdate.toGMTString();
             }
         },
         data() {
             return {
                 isLogin: false,
+                remember:false,
                 user: {}, //配合页面内的 prop 定义数据
                 rules: { //配合页面内的 prop 定义规则
                     name: [{
@@ -91,9 +122,18 @@
             };
         },
         created() {
+            let account = this.getCookie("account")
+            let password = Base64.decode(this.getCookie("password"))
+            // 如果存在赋值给表单，并且将记住密码勾选
+            if(account){
+                this.user.name = account
+                this.user.pass= password 
+                this.remember=true;
+            }
+            
             if (window.localStorage.token && window.localStorage.token.length >= 128) {
                 this.isLogin = true;
-            }
+            } 
         }
     };
 </script>

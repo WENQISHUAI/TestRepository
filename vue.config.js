@@ -39,7 +39,7 @@ module.exports = {
         proxy: {
             // 配置多个代理
             "/api": { //定义代理名称
-                target: "http://localhost:15427", //我们的接口域名地址
+                target: "http://localhost:5099", //我们的接口域名地址
                 ws: true,
                 changeOrigin: true, //允许跨域
                 pathRewrite: {
