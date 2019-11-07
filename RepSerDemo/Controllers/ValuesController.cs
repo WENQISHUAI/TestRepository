@@ -6,6 +6,7 @@ using IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Models;
+using Newtonsoft.Json;
 using RepSerDemo.Auth;
 //using Service;
 
@@ -23,22 +24,27 @@ namespace RepSerDemo.Controllers
         {
             _testService = testService;
         }
-         
+
         /// <summary>
         /// 数据库查询
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet]
+        [Route("GetData")]
         [Authorize]
-        public async Task<List<Notes>> Get(int id)
+        public async Task<object> GetData(int id)
         {
             //ITestService testService = new TestService(); 
             //return await testService.Query(d => d.Id == id);
 
 
-            return await _testService.Query(d=>d.Id==id);
+            var val = await _testService.Query(d => d.Id == id);
+            var models = JsonConvert.SerializeObject(val);
+            var data = new { success = true, data = models };
+            return data;
         }
+
 
 
         /// <summary>
@@ -63,9 +69,38 @@ namespace RepSerDemo.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetJWTStr")]
-        public string GetJWTStr()
+        public object GetJWTStr(string name, string pass)
         {
-            return new JwtHelper().GetJwtStr();
+            if (name == "admins" && pass == "admins")
+            {
+                var jwt = new JwtHelper().BuildJwtToken();
+                return jwt;
+            }
+            else
+            {
+                string message = "login fail!!!";
+                bool suc = false;
+                return new { success = suc, message = message };
+            }
         }
+
+        /// <summary>
+        /// 请求刷新Token（以旧换新）
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("RefreshToken")]
+        public object RefreshToken(string token = "")
+        {
+            string jwtStr = string.Empty;
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return new { success = false, message = "token无效，请重新登录！" };
+            }
+            return new JwtHelper().BuildJwtToken();
+        }
+
     }
 }

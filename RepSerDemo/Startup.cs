@@ -39,6 +39,16 @@ namespace RepSerDemo
             //BaseDBConfig.ConnectionString = Configuration.GetSection("AppSettings:SqlServerConnection").Value;
             JwtHelper.Configuration = Configuration;
 
+            //services.AddCors();
+            //services.AddCors(c=> {
+            //    c.AddPolicy("AllRequests", policy =>
+            //    {
+            //        policy.AllowAnyOrigin()
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader()
+            //        .AllowCredentials();
+            //    });
+            //});
 
             #region SwaggerService
             services.AddSwaggerGen(o =>
@@ -77,9 +87,11 @@ namespace RepSerDemo
                 });
                 #endregion
             });
-            #endregion 
+            #endregion
 
             #region jwt
+
+
             //读取配置文件
             var jwtConfig = Configuration.GetSection("JWT");
             var symmetricKeyAsBase64 = jwtConfig["Secret"];
@@ -88,6 +100,7 @@ namespace RepSerDemo
 
 
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+
 
 
             TokenValidationParameters tokenValidationParameters = new TokenValidationParameters
@@ -146,7 +159,7 @@ namespace RepSerDemo
             var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
             var serviceDllFile = Path.Combine(basePath, "Service.dll");
             var assemblyService = Assembly.LoadFrom(serviceDllFile);
-            builder.RegisterAssemblyTypes(assemblyService).AsImplementedInterfaces(); 
+            builder.RegisterAssemblyTypes(assemblyService).AsImplementedInterfaces();
 
             var repositoryDllFile = Path.Combine(basePath, "Repository.dll");
             var assemblysRepositorys = Assembly.LoadFrom(repositoryDllFile);
@@ -170,14 +183,19 @@ namespace RepSerDemo
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
 
+            }
+            //app.UseCors("AllRequests");
+
+            //app.UseCors(c=> {
+            //    c.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+            //});
 
             app.UseSwagger();
             app.UseSwaggerUI(u =>
             {
                 u.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-                u.RoutePrefix = "";
+                u.RoutePrefix = ""; 
             });
 
 

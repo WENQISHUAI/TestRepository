@@ -4,7 +4,7 @@
         <name>RepSerDemo</name>
     </assembly>
     <members>
-        <member name="M:RepSerDemo.Controllers.ValuesController.Get(System.Int32)">
+        <member name="M:RepSerDemo.Controllers.ValuesController.GetData(System.Int32)">
             <summary>
             数据库查询
             </summary>
@@ -19,10 +19,17 @@
             <param name="j"></param>
             <returns></returns>
         </member>
-        <member name="M:RepSerDemo.Controllers.ValuesController.GetJWTStr">
+        <member name="M:RepSerDemo.Controllers.ValuesController.GetJWTStr(System.String,System.String)">
             <summary>
             获取JWT字符串
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RepSerDemo.Controllers.ValuesController.RefreshToken(System.String)">
+            <summary>
+            请求刷新Token（以旧换新）
+            </summary>
+            <param name="token"></param>
             <returns></returns>
         </member>
     </members>

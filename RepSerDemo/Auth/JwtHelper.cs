@@ -14,20 +14,20 @@ namespace RepSerDemo.Auth
     {
         public static IConfiguration Configuration { get; set; }
 
-        public string GetJwtStr()
+        public dynamic BuildJwtToken()
         {
 
             var iss = Configuration.GetSection("JWT:Issuer").Value;
             var aud = Configuration.GetSection("JWT:Audience").Value;
             var sec = Configuration.GetSection("JWT:Secret").Value;
 
-
+            var expires = 60;
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Iss,iss),
                  new Claim(JwtRegisteredClaimNames.Aud,aud),
                   new Claim(JwtRegisteredClaimNames.Exp,
-                  $"{new DateTimeOffset(DateTime.Now.AddSeconds(1000)).ToUnixTimeSeconds()}")
+                  $"{new DateTimeOffset(DateTime.Now.AddSeconds(expires)).ToUnixTimeSeconds()}")
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(sec));
@@ -38,7 +38,15 @@ namespace RepSerDemo.Auth
             var jwtHandler = new JwtSecurityTokenHandler();
             var encodedJwt = jwtHandler.WriteToken(jwt);
 
-            return encodedJwt;
+
+            var responseJson = new
+            {
+                success = true,
+                token = encodedJwt,
+                expires_in = expires,// TimeSpan.FromSeconds(60),//60秒过期
+                token_type = "Bearer"
+            };
+            return responseJson;
         }
 
     }
